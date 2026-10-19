@@ -1,0 +1,218 @@
+#!/usr/bin/env bash
+
+# Init Flow
+# Copyright (c) 2026 Jacivaldo Carvalho
+# Licensed under the MIT License.
+
+set -euo pipefail
+
+VERSION="0.1.0-dev"
+PROJECTS_DIR="${INITFLOW_PROJECTS_DIR:-${HOME}/projects}"
+
+log_info() {
+    printf '[INFO] %s\n' "$1"
+}
+
+log_success() {
+    printf '[SUCCESS] %s\n' "$1"
+}
+
+log_error() {
+    printf '[ERROR] %s\n' "$1" >&2
+}
+
+show_help() {
+    cat <<EOF
+Init Flow - Project Initialization CLI
+
+Usage:
+  initflow <command> [arguments]
+
+Commands:
+  create <name>    Create a new local project and GitHub repository
+
+Options:
+  -h, --help       Show this help message
+  -v, --version    Show CLI version
+
+Examples:
+  initflow create my-project
+  initflow --help
+  initflow --version
+
+Documentation:
+  https://github.com/jacivaldocarvalho/init-flow
+EOF
+}
+
+check_dependency() {
+    local dependency="$1"
+
+    if ! command -v "$dependency" >/dev/null 2>&1; then
+        log_error "Required dependency not found: $dependency"
+        return 1
+    fi
+}
+
+validate_project_name() {
+    local name="$1"
+
+    if [[ ! "$name" =~ ^[a-zA-Z0-9][a-zA-Z0-9._-]*$ ]]; then
+        log_error "Invalid project name: $name"
+        log_error "Use only letters, numbers, dots, underscores, and hyphens."
+        return 1
+    fi
+
+    if [[ "$name" == *..* ]]; then
+        log_error "Project names cannot contain consecutive dots."
+        return 1
+    fi
+}
+
+check_dependencies() {
+    log_info "Checking dependencies..."
+
+    check_dependency git
+    check_dependency gh
+    check_dependency code
+}
+
+check_github_auth() {
+    log_info "Checking GitHub authentication..."
+
+    if ! gh auth status >/dev/null 2>&1; then
+        log_error "GitHub authentication failed."
+        log_error "Run: gh auth login"
+        return 1
+    fi
+}
+
+create_project() {
+    local name="$1"
+    local project_dir="${PROJECTS_DIR}/${name}"
+    local github_user
+    local repository_url
+
+    log_info "Validating project name..."
+    validate_project_name "$name"
+
+    check_dependencies
+    check_github_auth
+
+    github_user="$(gh api user --jq '.login')"
+
+    if [[ -z "$github_user" ]]; then
+        log_error "Unable to identify the authenticated GitHub user."
+        return 1
+    fi
+
+    log_info "Checking existing projects..."
+
+    if [[ -e "$project_dir" || -L "$project_dir" ]]; then
+        log_error "Local project directory already exists: $project_dir"
+        return 1
+    fi
+
+    local api_response
+    local api_exit_code=0
+    local http_status
+
+    # Capture the GitHub API response without masking command failures.
+    api_response="$(
+        gh api -i "repos/${github_user}/${name}" 2>/dev/null
+    )" || api_exit_code=$?
+
+    http_status="$(
+        printf '%s\n' "$api_response" |
+            awk 'toupper($1) ~ /^HTTP\// { status=$2 } END { print status }'
+    )"
+
+    case "$http_status" in
+        200)
+            log_error "GitHub repository already exists: ${github_user}/${name}"
+            return 1
+            ;;
+        404)
+            # A 404 response is expected for a repository that does not exist.
+            ;;
+        401|403)
+            log_error "GitHub API access denied (HTTP $http_status)."
+            return 1
+            ;;
+        *)
+            log_error "Unable to verify GitHub repository availability."
+            log_error "HTTP status: ${http_status:-unknown}"
+            log_error "GitHub CLI exit code: $api_exit_code"
+            return 1
+            ;;
+    esac
+
+    log_info "Creating project directory..."
+    mkdir -p "$PROJECTS_DIR"
+    mkdir "$project_dir"
+
+    log_info "Initializing Git..."
+    git -C "$project_dir" init -b main
+
+    log_info "Creating GitHub repository..."
+
+    if ! (
+        cd "$project_dir"
+        gh repo create "${github_user}/${name}" \
+            --public \
+            --source=. \
+            --remote=origin
+    ); then
+        log_error "GitHub repository creation failed."
+        log_error "Local directory preserved: $project_dir"
+        return 1
+    fi
+
+    repository_url="https://github.com/${github_user}/${name}"
+
+    log_success "Project created successfully!"
+    printf '\n'
+    printf 'Project: %s\n' "$name"
+    printf 'Directory: %s\n' "$project_dir"
+    printf 'Repository: %s\n' "$repository_url"
+    printf 'Branch: main\n'
+    printf '\n'
+
+    log_info "Opening Visual Studio Code..."
+
+    if ! code "$project_dir"; then
+        log_error "Unable to open Visual Studio Code."
+        log_info "Your project was created successfully."
+    fi
+}
+
+main() {
+    if [[ $# -eq 0 ]]; then
+        show_help
+        exit 1
+    fi
+
+    case "$1" in
+        create)
+            if [[ $# -ne 2 ]]; then
+                log_error "Usage: initflow create <project-name>"
+                exit 1
+            fi
+
+            create_project "$2"
+            ;;
+        -h|--help)
+            show_help
+            ;;
+        -v|--version)
+            printf 'Init Flow v%s\n' "$VERSION"
+            ;;
+        *)
+            log_error "Unknown command: $1"
+            show_help
+            exit 1
+            ;;
+    esac
+}
+
+main "$@"

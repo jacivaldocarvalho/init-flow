@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  shell-validation:
+    name: Shell Validation and Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install ShellCheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+
+      - name: Validate Bash syntax
+        run: |
+          bash -n scripts/initflow
+          bash -n scripts/install.sh
+          bash -n scripts/uninstall.sh
+          bash -n tests/test_initflow.sh
+          bash -n tests/test_create.sh
+          bash -n tests/test_install.sh
+          bash -n tests/test_uninstall.sh
+
+      - name: Run ShellCheck
+        run: |
+          shellcheck scripts/initflow
+          shellcheck scripts/install.sh
+          shellcheck scripts/uninstall.sh
+          shellcheck tests/test_initflow.sh
+          shellcheck tests/test_create.sh
+          shellcheck tests/test_install.sh
+          shellcheck tests/test_uninstall.sh
+
+      - name: Run CLI tests
+        run: bash tests/test_initflow.sh
+
+      - name: Run integration tests
+        run: bash tests/test_create.sh
+
+      - name: Run installer tests
+        run: bash tests/test_install.sh
+
+      - name: Run uninstaller tests
+        run: bash tests/test_uninstall.sh

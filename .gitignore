@@ -1,0 +1,36 @@
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local configuration
+.local/
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+*.bak
+
+# Logs
+*.log
+logs/
+
+# Test artifacts
+coverage/
+test-results/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Build and distribution artifacts
+dist/
+build/
