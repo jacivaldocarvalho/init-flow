@@ -6,7 +6,8 @@
 [![GitHub CLI](https://img.shields.io/badge/GitHub-CLI-181717?style=flat-square&logo=github&logoColor=white)](https://cli.github.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 ![Status](https://img.shields.io/badge/Status-In%20Development-orange?style=flat-square)
-![Version](https://img.shields.io/badge/Version-0.1.0%20-lightgrey?style=flat-square)
+[![GitHub Release](https://img.shields.io/github/v/release/jacivaldocarvalho/init-flow?style=flat-square)](https://github.com/jacivaldocarvalho/init-flow/releases)
+
 
 **Automate local project creation and GitHub repository setup directly from your terminal.**
 
@@ -55,9 +56,9 @@ Once implemented, this command will:
 
 ## Installation
 
-Installation instructions will be provided once the first functional release is implemented and validated.
+Init Flow can be installed locally from the source repository using the provided installation script.
 
-See [Installation Guide](docs/installation.md).
+For detailed setup instructions, requirements, and troubleshooting, see the [Installation Guide](docs/installation.md).
 
 
 ### Uninstallation

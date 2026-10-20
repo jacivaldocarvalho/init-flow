@@ -9,24 +9,41 @@ for automating software project initialization.
 Features and release targets may change based on technical requirements,
 community feedback, and project priorities.
 
+
 ## v0.1.0 — Core CLI
 
 **Goal:** Deliver the first functional version of Init Flow.
 
+**Status:** Implementation complete — release preparation in progress.
+
 ### Features
 
-- [ ] Implement the `initflow` Bash executable.
-- [ ] Support `initflow create <project-name>`.
-- [ ] Validate project names and CLI arguments.
-- [ ] Check required dependencies.
-- [ ] Verify GitHub CLI authentication.
-- [ ] Create local project directories.
-- [ ] Initialize Git with the `main` branch.
-- [ ] Create public GitHub repositories.
-- [ ] Configure the `origin` remote.
-- [ ] Open projects in Visual Studio Code.
-- [ ] Implement `--help` and `--version`.
-- [ ] Handle errors and partial failures.
+- [x] Implement the `initflow` Bash executable.
+- [x] Support `initflow create <project-name>`.
+- [x] Validate project names and CLI arguments.
+- [x] Check required dependencies.
+- [x] Verify GitHub CLI authentication.
+- [x] Create local project directories.
+- [x] Initialize Git with the `main` branch.
+- [x] Create public GitHub repositories.
+- [x] Configure the `origin` remote.
+- [x] Open projects in Visual Studio Code.
+- [x] Implement `--help` and `--version`.
+- [x] Handle tested errors and partial failures.
+- [x] Provide safe local installation and uninstallation scripts.
+
+### Quality and Documentation
+
+- [x] Implement automated CLI tests.
+- [x] Implement integration tests with mocked dependencies.
+- [x] Implement installer and uninstaller tests.
+- [x] Configure ShellCheck.
+- [x] Configure GitHub Actions CI.
+- [x] Document installation and usage.
+- [x] Document the initial architecture.
+- [x] Document security considerations and troubleshooting.
+- [x] Provide basic usage examples.
+
 
 ### Quality and Documentation
 

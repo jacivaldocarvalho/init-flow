@@ -6,7 +6,7 @@
 
 set -euo pipefail
 
-VERSION="0.1.0-dev"
+VERSION="0.1.0"
 PROJECTS_DIR="${INITFLOW_PROJECTS_DIR:-${HOME}/projects}"
 
 log_info() {
