@@ -15,7 +15,7 @@
 
 The goal is to eliminate repetitive setup tasks, allowing developers to start new projects with a single command.
 
-**Project Status:** Active development — MVP implemented and available for installation from source. Automated tests and GitHub Actions CI are operational. The first official release is being prepared.
+**Project Status:** Active development — v0.1.0 released and available for installation from source. Automated tests and GitHub Actions CI are operational.
 
 ## Overview
 
