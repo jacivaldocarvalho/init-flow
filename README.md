@@ -1,11 +1,12 @@
 # Init Flow
 
+[![CI](https://github.com/jacivaldocarvalho/init-flow/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/jacivaldocarvalho/init-flow/actions/workflows/ci.yml)
 [![Bash](https://img.shields.io/badge/Bash-CLI-4EAA25?style=flat-square&logo=gnubash&logoColor=white)](https://www.gnu.org/software/bash/)
 [![Git](https://img.shields.io/badge/Git-Version%20Control-F05032?style=flat-square&logo=git&logoColor=white)](https://git-scm.com/)
 [![GitHub CLI](https://img.shields.io/badge/GitHub-CLI-181717?style=flat-square&logo=github&logoColor=white)](https://cli.github.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 ![Status](https://img.shields.io/badge/Status-In%20Development-orange?style=flat-square)
-![Version](https://img.shields.io/badge/Version-0.1.0%20Planned-lightgrey?style=flat-square)
+![Version](https://img.shields.io/badge/Version-0.1.0%20-lightgrey?style=flat-square)
 
 **Automate local project creation and GitHub repository setup directly from your terminal.**
 
@@ -13,7 +14,7 @@
 
 The goal is to eliminate repetitive setup tasks, allowing developers to start new projects with a single command.
 
-> **Project Status:** Under development. The CLI is not yet available for installation or general use.
+**Project Status:** Active development — MVP implemented and available for installation from source. Automated tests and GitHub Actions CI are operational. The first official release is being prepared.
 
 ## Overview
 
