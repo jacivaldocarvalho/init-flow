@@ -205,15 +205,15 @@ main() {
     reset_mocks
     export MOCK_LOG="${TEST_ROOT}/calls"
     assert_success "Private repository" "$CLI" create private-project --private --no-editor
-    if rg -q -- '--private' "$MOCK_LOG"; then PASSED=$((PASSED + 1)); else FAILED=$((FAILED + 1)); fi
+    if grep -Fq -- '--private' "$MOCK_LOG"; then PASSED=$((PASSED + 1)); else FAILED=$((FAILED + 1)); fi
 
     : > "$MOCK_LOG"
     assert_success "Description and README" "$CLI" create described --description "A description: \$special & spaces" --readme --no-editor
-    if [[ -f "${INITFLOW_PROJECTS_DIR}/described/README.md" ]] && rg -Fq -- "A description: \$special & spaces" "$MOCK_LOG"; then PASSED=$((PASSED + 1)); else FAILED=$((FAILED + 1)); fi
+    if [[ -f "${INITFLOW_PROJECTS_DIR}/described/README.md" ]] && grep -Fq -- "A description: \$special & spaces" "$MOCK_LOG"; then PASSED=$((PASSED + 1)); else FAILED=$((FAILED + 1)); fi
 
     : > "$MOCK_LOG"
     assert_success "Local project at custom path" "$CLI" create local-project --local --path "${TEST_ROOT}/custom path" --no-editor
-    if [[ -d "${TEST_ROOT}/custom path/local-project" ]] && ! rg -q 'gh:|code' "$MOCK_LOG"; then PASSED=$((PASSED + 1)); else FAILED=$((FAILED + 1)); fi
+    if [[ -d "${TEST_ROOT}/custom path/local-project" ]] && ! grep -Eq 'gh:|code' "$MOCK_LOG"; then PASSED=$((PASSED + 1)); else FAILED=$((FAILED + 1)); fi
 
     assert_failure "Reject local private" "$CLI" create bad-private --local --private
     assert_failure "Reject local description" "$CLI" create bad-description --local --description text
@@ -228,7 +228,8 @@ main() {
     assert_success "Dry run with no external commands on PATH" env PATH=/nonexistent /usr/bin/bash "$CLI" create independent --dry-run --no-editor
     if [[ ! -e "${INITFLOW_PROJECTS_DIR}/independent" ]]; then PASSED=$((PASSED + 1)); else FAILED=$((FAILED + 1)); fi
 
-    if "$CLI" create remote-preview --dry-run --no-editor | rg -q 'Remote availability has not been verified'; then PASSED=$((PASSED + 1)); else FAILED=$((FAILED + 1)); fi
+    preview_output="$("$CLI" create remote-preview --dry-run --no-editor)"
+    if [[ "$preview_output" == *'Remote availability has not been verified'* ]]; then PASSED=$((PASSED + 1)); else FAILED=$((FAILED + 1)); fi
 
     (
         cd "$TEST_ROOT"
