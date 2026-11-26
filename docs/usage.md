@@ -1,11 +1,7 @@
 
 # Usage Guide
 
-This guide describes the planned command-line interface and expected
-behavior of Init Flow.
-
-> **Status:** Init Flow is under development. The commands described
-> below are planned and are not yet available for general use.
+This guide describes Init Flow v0.2.0.
 
 ## Command Syntax
 
@@ -15,7 +11,7 @@ Init Flow follows a command-based CLI structure:
 initflow <command> [arguments] [options]
 ```
 
-The initial release will support:
+Available commands:
 
 | Command | Description |
 |---|---|
@@ -45,7 +41,7 @@ The command is designed to:
 
 ### Expected Directory Structure
 
-The default project directory is planned to be:
+The default project directory is:
 
 ```text
 ~/projects/
@@ -53,31 +49,11 @@ The default project directory is planned to be:
     └── .git/
 ```
 
-No README, `.gitignore`, LICENSE, or initial commit will be
-generated automatically in the first release.
+README.md is generated only with `--readme`. No commit or push is performed.
 
-## Expected Output
+## Output
 
-A successful execution may display output similar to:
-
-```text
-[INFO] Validating project name...
-[INFO] Checking dependencies...
-[INFO] Checking GitHub authentication...
-[INFO] Creating local project...
-[INFO] Initializing Git repository...
-[INFO] Creating GitHub repository...
-[INFO] Configuring remote origin...
-[INFO] Opening Visual Studio Code...
-
-[SUCCESS] Project created successfully.
-
-Local path: /home/user/projects/my-project
-Repository: https://github.com/username/my-project
-```
-
-This output is illustrative. The final messages may change
-during implementation.
+Successful creation reports the project name, directory, `main` branch, and GitHub URL when a remote repository was created. Dry-run lists planned operations and states that remote availability was not verified.
 
 ## Publishing Your First Commit
 
@@ -142,13 +118,7 @@ when necessary.
 initflow create
 ```
 
-Expected behavior:
-
-```text
-[ERROR] Missing project name.
-
-Usage: initflow create <project-name>
-```
+The command reports a missing project name and exits with a nonzero status.
 
 ### Invalid Project Name
 
@@ -156,11 +126,7 @@ Usage: initflow create <project-name>
 initflow create "my project"
 ```
 
-Expected behavior:
-
-```text
-[ERROR] Invalid project name.
-```
+The command reports the invalid name and exits with a nonzero status.
 
 ### Existing Local Directory
 
@@ -213,24 +179,23 @@ Display the installed version:
 initflow --version
 ```
 
-These commands will be implemented in the first functional release.
+These commands are available.
 
-## Planned Options
-
-The following options are planned for future versions and
-are not available in the initial release.
+## Create Options
 
 | Option | Description |
 |---|---|
 | `--private` | Create a private repository |
 | `--readme` | Generate an initial README |
-| `--gitignore` | Generate a language-specific `.gitignore` |
-| `--license` | Add a project license |
-| `--template` | Initialize a project from a template |
-| `--path` | Specify a custom project directory |
+| `--description TEXT` | Set the GitHub repository description |
+| `--local` | Create a local Git project without GitHub integration |
+| `--path DIRECTORY` | Specify a custom projects base directory |
 | `--no-editor` | Skip automatic editor launch |
+| `--dry-run` | Show planned operations without creating anything |
 
-### Future Usage Examples
+`--local` cannot be combined with `--private` or `--description`. All other combinations are supported. Paths may be absolute or relative; relative paths resolve from the working directory where Init Flow was invoked. Path precedence is `--path` > `INITFLOW_PROJECTS_DIR` > `$HOME/projects`. Dry-run does not verify remote availability or require Git, GitHub CLI, authentication, or VS Code.
+
+### Examples
 
 Create a private repository:
 
@@ -238,16 +203,18 @@ Create a private repository:
 initflow create my-api --private
 ```
 
-Create a Python project:
+Create a local project with a README:
 
 ```bash
-initflow create my-api --template python
+initflow create my-api --local --readme --no-editor
 ```
 
 Choose a custom directory:
 
 ```bash
 initflow create my-project --path ~/workspace
+
+initflow create my-project --description "Tools & automation" --dry-run
 ```
 
 ## Additional Documentation

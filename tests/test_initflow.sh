@@ -74,6 +74,27 @@ main() {
     assert_failure "Invalid project name with special characters" \
         "$CLI" create "project@123"
 
+    assert_success "Parse all compatible options" \
+        "$CLI" create parsed --private --readme --description "Special & spaces" --path "relative path" --no-editor --dry-run
+
+    assert_success "Parse local dry run" \
+        "$CLI" create parsed --local --readme --no-editor --dry-run
+
+    assert_failure "Reject duplicate value option" \
+        "$CLI" create parsed --path one --path two --dry-run
+
+    assert_failure "Reject missing description" \
+        "$CLI" create parsed --description --dry-run
+
+    assert_failure "Reject incompatible local and private" \
+        "$CLI" create parsed --local --private --dry-run
+
+    assert_failure "Reject incompatible local and description" \
+        "$CLI" create parsed --local --description text --dry-run
+
+    assert_failure "Reject unknown create option" \
+        "$CLI" create parsed --unknown --dry-run
+
     printf '\n'
     printf 'Passed: %d\n' "$PASSED"
     printf 'Failed: %d\n' "$FAILED"

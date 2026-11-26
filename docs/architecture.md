@@ -84,16 +84,15 @@ init-flow/
 └── README.md
 ```
 
-The `scripts/initflow` executable will contain the initial CLI
-implementation.
+The `scripts/initflow` executable contains the CLI implementation.
 
-The `tests/` directory will contain automated tests.
+The `tests/` directory contains automated tests.
 
-GitHub Actions workflows will be stored in `.github/workflows/`.
+GitHub Actions workflows are stored in `.github/workflows/`.
 
 ## CLI Interface
 
-The planned command structure is:
+The command structure is:
 
 ```bash
 initflow <command> [arguments] [options]
@@ -107,17 +106,17 @@ initflow <command> [arguments] [options]
 | `initflow --help` | Display CLI help |
 | `initflow --version` | Display CLI version |
 
-Additional commands and options will be introduced in future releases.
+The `create` command accepts `--private`, `--readme`, `--description TEXT`, `--local`, `--path DIRECTORY`, `--no-editor`, and `--dry-run`.
 
 ## Project Creation Workflow
 
-The initial `create` command will follow these steps:
+The `create` command follows these steps, skipping disabled integrations and stopping after the preview in dry-run mode:
 
 1. Parse command-line arguments.
 2. Validate the project name.
-3. Verify required dependencies.
-4. Verify GitHub authentication.
-5. Check whether the local directory already exists.
+3. Check whether the local directory already exists.
+4. Verify dependencies required by enabled operations.
+5. Verify GitHub authentication when remote creation is enabled.
 6. Check whether the target GitHub repository already exists.
 7. Create the local project directory.
 8. Initialize Git with the `main` branch.
@@ -140,20 +139,18 @@ The CLI must reject invalid input before modifying the filesystem.
 
 ## Dependency Management
 
-The initial implementation requires:
+Normal creation requires Bash and Git. Remote creation also requires `gh` and GitHub authentication; editor launch requires `code`:
 
 - Bash
 - Git
-- GitHub CLI (`gh`)
-- Visual Studio Code (`code`)
+- GitHub CLI (`gh`) for remote creation
+- Visual Studio Code (`code`) for editor launch
 
-Dependencies will be checked before project creation.
-
-Future versions may support optional editor integration.
+Dry-run does not check external dependencies or create resources.
 
 ## GitHub Integration
 
-GitHub repository operations will use the official GitHub CLI.
+GitHub repository operations use the official GitHub CLI. Repositories are public by default; `--private` changes visibility.
 
 Example:
 

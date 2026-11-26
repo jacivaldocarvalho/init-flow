@@ -47,11 +47,11 @@ The default project directory is:
 
 ## 4. Repository Visibility
 
-In the current development version, Init Flow creates public GitHub repositories.
+Init Flow creates public GitHub repositories by default. Use `--private` to create a private repository.
 
 Users should avoid placing confidential information, credentials, API keys, or private business data in repositories intended for publication.
 
-Private repository support is planned for a future release.
+Use `--local` to avoid GitHub integration entirely. `--dry-run` does not create resources or verify remote availability.
 
 ## 5. Installation Safety
 

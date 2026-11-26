@@ -4,8 +4,7 @@
 This guide covers common installation, configuration, and runtime
 issues related to Init Flow and its dependencies.
 
-> **Status:** Init Flow is under development. Some CLI-specific
-> troubleshooting procedures apply to the planned implementation.
+For local-only projects, use `--local` to skip GitHub CLI and authentication. Use `--no-editor` to skip VS Code. `--dry-run` previews operations without checking external dependencies or remote availability.
 
 ## 1. Command Not Found
 

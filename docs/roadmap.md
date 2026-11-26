@@ -58,13 +58,13 @@ community feedback, and project priorities.
 
 **Goal:** Introduce configurable project initialization.
 
-- [ ] Support private repositories with `--private`.
-- [ ] Generate README files with `--readme`.
-- [ ] Generate `.gitignore` files.
-- [ ] Add license generation.
-- [ ] Support custom project directories.
-- [ ] Support configurable default settings.
-- [ ] Make automatic editor launching optional.
+- [x] Support private repositories with `--private`.
+- [x] Generate README files with `--readme`.
+- [x] Support repository descriptions with `--description`.
+- [x] Support local-only projects with `--local`.
+- [x] Support custom project directories with `--path`.
+- [x] Make automatic editor launching optional with `--no-editor`.
+- [x] Preview operations safely with `--dry-run`.
 
 ## v0.3.0 — Project Templates
 

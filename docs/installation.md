@@ -171,7 +171,7 @@ initflow --help
 Expected version:
 
 ```text
-Init Flow v0.1.0-dev
+Init Flow v0.2.0
 ```
 
 ### Security Considerations
@@ -189,7 +189,7 @@ Once the CLI is available:
 initflow create my-project
 ```
 
-By default, Init Flow is planned to create projects under:
+By default, Init Flow creates projects under:
 
 ```text
 ~/projects/

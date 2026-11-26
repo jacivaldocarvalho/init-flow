@@ -8,6 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-26
+
+### Added
+
+- Private repositories, optional README generation, and repository descriptions.
+- Local-only creation, custom project paths, optional editor launch, and dry-run preview.
+- Validation for duplicate, missing, unknown, and incompatible options.
+
+### Changed
+
+- Dependency checks now match enabled integrations; dry-run needs none.
+
 ## [0.1.0] - 2026-10-19
 
 ### Added
@@ -39,5 +51,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Safe handling of installation and uninstallation symbolic links.
 - Documentation of public repository visibility and current security limitations.
 
-[Unreleased]: https://github.com/jacivaldocarvalho/init-flow/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/jacivaldocarvalho/init-flow/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/jacivaldocarvalho/init-flow/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/jacivaldocarvalho/init-flow/releases/tag/v0.1.0
